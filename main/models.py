@@ -19,7 +19,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=32)
     description = models.TextField(blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
     package = models.CharField(max_length=32)
     price = models.IntegerField()
     size = models.CharField(max_length=32)
@@ -38,7 +38,7 @@ class Payment(models.Model):
 class Order(models.Model):
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
-        APPROVED = "approved", "Approved"
+        APPROVED = "approved", "Completed"
         REJECTED = "rejected", "Rejected"
 
     class Paid(models.TextChoices):
@@ -50,8 +50,8 @@ class Order(models.Model):
     order_number = models.IntegerField()
     price = models.IntegerField()
     quantity = models.IntegerField()
-    discount = models.DecimalField()
-    total = models.DecimalField()
+    discount = models.DecimalField("Discount", max_digits=5, decimal_places=2)
+    total = models.DecimalField("Total", max_digits=10, decimal_places=2)
     ship_date = models.DateTimeField()
     payment = models.OneToOneField(Payment, on_delete=models.PROTECT)
     order_date = models.DateTimeField()
