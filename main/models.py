@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 # Create your models here.
 
 class User(AbstractUser):
-    phone = models.IntegerField()
+    phone = models.IntegerField(null=True)
     address = models.TextField()
     picture = models.ImageField(verbose_name="Picture of User", width_field=40, height_field=50)
 
@@ -32,6 +32,7 @@ class Payment(models.Model):
     class Type(models.TextChoices):
         CARD = "card", "Card"
         CASH = 'cash', "Cash"
+
     payment_type = models.CharField("Type", max_length=20, choices=Type.choices)
 
 
@@ -58,3 +59,23 @@ class Order(models.Model):
     status = models.CharField("Status", max_length=20, choices=Status.choices, default=Status.PENDING)
     paid = models.CharField("Paid", max_length=20, choices=Paid.choices, default=Paid.UNPAID)
     payment_date = models.DateTimeField()
+
+#
+# class OrderProduct(models.Model):
+#     order = models.ForeignKey(Order, on_delete=models.PROTECT)
+#     product = models.ForeignKey(Product, on_delete=models.PROTECT)
+#     price = models.DecimalField()
+#     count = models.IntegerField()
+#
+#
+# products = [
+#     dict(
+#         product=1,
+#         count=3
+#     ),
+#     dict(
+#         product=2,
+#         count=3
+#
+#     )
+# ]
