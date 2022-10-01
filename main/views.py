@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from main import serializers
-from main.models import Order, Product
+# from main.models import Order, Product
 from main import filters
 
 
@@ -22,10 +22,10 @@ from main import filters
 #     queryset = Product.objects.all()
 
 
-class ProductViewsSet(viewsets.ModelViewSet):
-    serializer_class = serializers.ProductSerializer
-    queryset = Product.objects.all()
-    permission_classes = [] ## must be is admin
+# class ProductViewsSet(viewsets.ModelViewSet):
+#     serializer_class = serializers.ProductSerializer
+#     queryset = Product.objects.all()
+#     permission_classes = [] ## must be is admin
 
     # def get_permissions(self):
     #     permissions = super().get_permissions()
@@ -34,7 +34,7 @@ class ProductViewsSet(viewsets.ModelViewSet):
     #     return permissions
 
 
-class OrderViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    queryset = Order.objects.all()
-    serializer_class = serializers.OrderSerializer
+# class OrderViewSet(viewsets.ModelViewSet):
+#     permission_classes = [permissions.IsAuthenticated]
+#     queryset = Order.objects.all()
+#     serializer_class = serializers.OrderSerializer
