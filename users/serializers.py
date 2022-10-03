@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers, settings
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -17,9 +17,8 @@ class CustomUserReadSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = (
             "id",
-            "email",
+            "phone",
             "name",
-            "role",
         )
 
 
@@ -31,8 +30,7 @@ class CustomUserWriteSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "email",
-            "role",
+            "phone",
             "password",
         )
 
