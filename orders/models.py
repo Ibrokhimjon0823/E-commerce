@@ -21,6 +21,7 @@ class Order(models.Model):
     product = models.OneToOneField(Product, on_delete=models.PROTECT)
     order_number = models.IntegerField()
     price = models.IntegerField()
+    quantity = models.IntegerField(default=1)
     discount = models.DecimalField("Discount", max_digits=5, decimal_places=2)
     ship_date = models.DateTimeField()
     payment = models.OneToOneField(Payment, on_delete=models.PROTECT)
@@ -31,9 +32,9 @@ class Order(models.Model):
 
 
 class OrderDetails(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.PROTECT)
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='order_details')
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     price = models.DecimalField("Price", max_digits=10, decimal_places=2)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=1)
     total = models.DecimalField("Total", max_digits=10, decimal_places=2)
 

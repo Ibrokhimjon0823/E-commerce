@@ -10,26 +10,16 @@ from .filters import ProductFilter
 
 
 # Create your views here.
-class ProductListView(generics.ListAPIView):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = ProductFilter
-
-
-class ProductDetailView(generics.RetrieveAPIView):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
-
 
 class ProductViewsSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-    permission_classes = [] ## must be is admin
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductFilter
+    permission_classes = [permissions.AllowAny] ## must be is admin
 
-    # def get_permissions(self):
-    #     permissions = super().get_permissions()
-    #     if self.action in ['list', 'retrieve']:
-    #         return permissions.append(AllowAny())
-    #     return permissions
     #
+    def get_permissions(self):
+        if self.action in ('create', 'update', 'partial_update', 'destroy'):
+            self.permission_classes = [permissions.IsAdminUser, ]
+        return super(self.__class__, self).get_permissions()

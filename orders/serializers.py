@@ -27,10 +27,16 @@ class OrderSerializer(serializers.ModelSerializer):
             OrderDetails.objects.create(
                 order=order,
                 product=product['product'],
-                count=product['count'],
+                quantity=product['quantity'],
                 price=product['product'].price
             )
         return order
 
-    # def update(self, instance, validated_data):
-    #     pass
+    def update(self, instance, validated_data):
+        super(OrderSerializer, self).update(instance, validated_data)
+
+        for order_detail in self.instance.order_details.all():
+            pass
+
+
+        return instance
