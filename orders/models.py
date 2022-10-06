@@ -18,23 +18,15 @@ class Order(models.Model):
         UNPAID = "unpaid", "Unpaid"
 
     customer = models.ForeignKey(User, on_delete=models.PROTECT)
-    product = models.OneToOneField(Product, on_delete=models.PROTECT)
-    order_number = models.IntegerField()
-    price = models.IntegerField()
-    quantity = models.IntegerField(default=1)
-    discount = models.DecimalField("Discount", max_digits=5, decimal_places=2)
-    ship_date = models.DateTimeField()
-    payment = models.OneToOneField(Payment, on_delete=models.PROTECT)
-    order_date = models.DateTimeField()
     status = models.CharField("Status", max_length=20, choices=Status.choices, default=Status.PENDING)
     paid = models.CharField("Paid", max_length=20, choices=Paid.choices, default=Paid.UNPAID)
-    payment_date = models.DateTimeField()
 
 
 class OrderDetails(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='order_details')
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.DecimalField("Price", max_digits=10, decimal_places=2)
     quantity = models.IntegerField(default=1)
-    total = models.DecimalField("Total", max_digits=10, decimal_places=2)
 
+    # def __str__(self):
+    #     self.product

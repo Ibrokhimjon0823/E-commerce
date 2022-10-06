@@ -1,17 +1,16 @@
-from abc import ABC
-
 from rest_framework import serializers
-from models import Order, OrderDetails
+from .models import Order, OrderDetails
 from products.models import Product
 
 
-class OrderProductSerializer(serializers.Serializer, ABC):
+class OrderProductSerializer(serializers.Serializer):
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-    count = serializers.IntegerField()
+    quantity = serializers.IntegerField()
 
 
 class OrderSerializer(serializers.ModelSerializer):
     products = OrderProductSerializer(many=True, required=False)
+    order_details = OrderProductSerializer(many=True, required=False)
 
     class Meta:
         model = Order
@@ -33,10 +32,19 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
     def update(self, instance, validated_data):
-        super(OrderSerializer, self).update(instance, validated_data)
-
-        for order_detail in self.instance.order_details.all():
-            pass
-
+        products = validated_data.pop('products', [])
+        order = super().update(instance, validated_data)
+        pk_list = []
+        for product in products:
+            pk_list.append(product['product'].pk)
+            OrderDetails.objects.update_or_create(
+                order=order,
+                product=product['product'],
+                defaults=dict(
+                    quantity=product['quantity'],
+                    price=product['product'].price
+                )
+            )
+        OrderDetails.objects.exclude(order=order, product_id__in=pk_list).delete()
 
         return instance

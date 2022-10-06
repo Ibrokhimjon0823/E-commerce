@@ -9,8 +9,11 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     package = models.CharField(max_length=32)
-    price = models.IntegerField()
+    price = models.DecimalField("Price", max_digits=5, decimal_places=2)
     size = models.CharField(max_length=32)
     picture = models.ImageField(verbose_name="Picture of Product")
     country = models.CharField(max_length=20)
     brand = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
