@@ -14,7 +14,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = "__all__"
+        fields = ('id', 'products', 'order_details', 'customer', 'status', 'paid')
 
     def validate(self, attrs):
         return attrs
@@ -48,3 +48,12 @@ class OrderSerializer(serializers.ModelSerializer):
         OrderDetails.objects.exclude(order=order, product_id__in=pk_list).delete()
 
         return instance
+
+
+class StatusChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['status']
+        extra_kwargs = {
+            'status': {'required': True}
+        }

@@ -21,6 +21,9 @@ class Order(models.Model):
     status = models.CharField("Status", max_length=20, choices=Status.choices, default=Status.PENDING)
     paid = models.CharField("Paid", max_length=20, choices=Paid.choices, default=Paid.UNPAID)
 
+    def __str__(self):
+        return self.customer.username
+
 
 class OrderDetails(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='order_details')
@@ -28,5 +31,5 @@ class OrderDetails(models.Model):
     price = models.DecimalField("Price", max_digits=10, decimal_places=2)
     quantity = models.IntegerField(default=1)
 
-    # def __str__(self):
-    #     self.product
+    def __str__(self):
+        return self.product.name
